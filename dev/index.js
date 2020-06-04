@@ -3,21 +3,28 @@ const loop = require('raf-loop')
 
 //const shader = require('./../index.js').shaderGenerator
 
+let metro;
+let midi;
+
 function init () {
+  var hydra = new Hydra();
+  window.hydra = hydra;
+
+  midi = hydra.synth.midi;
+  metro = hydra.synth.metronom;
+
+  exampleAddFunction();
 ///  exampleNonGlobal()
 
 //  exampleExtendTransforms()
- var hydra = new Hydra()
-  window.hydra = hydra
-  // midi = hydra.synth.midi;
-  // metro = hydra.synth.metronom;
+ 
+  
 //
 //   exampleAddFunction(hydra)
 // //  exampleScreen()
 //
 // exampleCustomCanvas()
  // exampleSmoothing()
- exampleMetronom();
   ///var generator = new shader()
 
 
@@ -187,7 +194,9 @@ function exampleSetResolution() {
 }
 
 function exampleMetronom() {
-  shape(3, () => 0.3 + hydra.synth.metronom.ones / 3).out();
+  console.log(midi);
+  console.log(metro);
+  shape(3, () => 0.3 + hydra.synth.metronom.variables.ones / 3).out();
 }
 
 window.onload = init
