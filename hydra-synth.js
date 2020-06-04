@@ -7,6 +7,9 @@ const VidRecorder = require('./src/lib/video-recorder.js')
 const ArrayUtils = require('./src/lib/array-utils.js')
 const Sandbox = require('./src/eval-sandbox.js')
 
+// JayMaster's extensions
+const MidiManager = require('./src/midi-manager.js')
+
 const Generator = require('./src/generator-factory.js')
 
 // to do: add ability to pass in certain uniforms and transforms
@@ -54,7 +57,8 @@ class HydraRenderer {
       render: this._render.bind(this),
       setResolution: this.setResolution.bind(this),
       update: (dt) => {},// user defined update function
-      hush: this.hush.bind(this)
+      hush: this.hush.bind(this),
+      midi: new MidiManager()
     }
 
     this.timeSinceLastUpdate = 0
@@ -103,6 +107,11 @@ class HydraRenderer {
 
     // final argument is properties that the user can set, all others are treated as read-only
     this.sandbox = new Sandbox(this.synth, makeGlobal, ['speed', 'update', 'bpm', 'fps'])
+  }
+
+  setBpm(newBpm) {
+    this.synth.bpm = newBpm;
+    this.sandbox = new Sandbox(this.synth, this.makeGlobal, ['speed', 'update', 'bpm', 'fps'])
   }
 
   eval(code) {

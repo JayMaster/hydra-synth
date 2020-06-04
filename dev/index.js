@@ -9,6 +9,7 @@ function init () {
 //  exampleExtendTransforms()
  var hydra = new Hydra()
   window.hydra = hydra
+  var midi = hydra.synth.midi;
 //
 //   exampleAddFunction(hydra)
 // //  exampleScreen()
