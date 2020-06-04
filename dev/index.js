@@ -9,13 +9,15 @@ function init () {
 //  exampleExtendTransforms()
  var hydra = new Hydra()
   window.hydra = hydra
-  var midi = hydra.synth.midi;
+  // midi = hydra.synth.midi;
+  // metro = hydra.synth.metronom;
 //
 //   exampleAddFunction(hydra)
 // //  exampleScreen()
 //
 // exampleCustomCanvas()
- exampleSmoothing()
+ // exampleSmoothing()
+ exampleMetronom();
   ///var generator = new shader()
 
 
@@ -182,6 +184,10 @@ function exampleSmoothing() {
 
 function exampleSetResolution() {
   setResolution(20, 20)
+}
+
+function exampleMetronom() {
+  shape(3, () => 0.3 + hydra.synth.metronom.ones / 3).out();
 }
 
 window.onload = init

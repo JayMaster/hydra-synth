@@ -9,6 +9,7 @@ const Sandbox = require('./src/eval-sandbox.js')
 
 // JayMaster's extensions
 const MidiManager = require('./src/midi-manager.js')
+const Metronom = require('./src/metronom.js')
 
 const Generator = require('./src/generator-factory.js')
 
@@ -58,7 +59,8 @@ class HydraRenderer {
       setResolution: this.setResolution.bind(this),
       update: (dt) => {},// user defined update function
       hush: this.hush.bind(this),
-      midi: new MidiManager()
+      midi: new MidiManager(),
+      metronom: new Metronom()
     }
 
     this.timeSinceLastUpdate = 0
@@ -109,10 +111,13 @@ class HydraRenderer {
     this.sandbox = new Sandbox(this.synth, makeGlobal, ['speed', 'update', 'bpm', 'fps'])
   }
 
+/*
+use hydra.bpm(int) instead
   setBpm(newBpm) {
     this.synth.bpm = newBpm;
     this.sandbox = new Sandbox(this.synth, this.makeGlobal, ['speed', 'update', 'bpm', 'fps'])
   }
+*/
 
   eval(code) {
     this.sandbox.eval(code)

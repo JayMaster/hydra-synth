@@ -34,6 +34,7 @@
     "mouse-change": "^1.4.0",
     "raf-loop": "^1.1.3",
     "regl": "^1.3.9",
+    "tone": "^13.8.25",
     "web-audio-analyser": "^2.0.1"
   },
   "devDependencies": {
