@@ -1,8 +1,13 @@
 class MidiManager {
-
+	// TODO: add general toggle buttons
 	constructor() {
 		this.beatToggle = 72;
-		this.scenePads = [43, 44, 45, 46, 47];
+		this.scenePadsLowerBound = 43;
+		this.scenePadsUpperBound = 47;
+
+		this.cc = [];
+
+		this.activeScene = this.scenePadsLowerBound;
 
 		console.log('MidiManager constructor');
 		this._init();
@@ -11,39 +16,27 @@ class MidiManager {
 	_init() {
 		// register WebMIDI
     	navigator.requestMIDIAccess()
-        .then(this.onMIDISuccess, this.onMIDIFailure);
+        .then(this.onMIDISuccess.bind(this), this.onMIDIFailure.bind(this));
 
         this.registerMIDI();
 	}
 
+  foo() {
+    console.log('hi');
+  }
+
 	registerMIDI() {
-		let beatTogglerMIDIChannel = 72; // MIDI channel to turn on / off the "beater" interval as a toggle
-		let toggleButtons = []; // all buttons that should be toggle buttons
-		let j = 0;
-		for (var i = 51; i < 73; i++) {
-			toggleButtons[j] = i;
-			j++;
-		}
+		let beatTogglerMIDIChannel = this.beatToggle; // MIDI channel to turn on / off the "beater" interval as a toggle
+		
+		// let toggleButtons = []; // all buttons that should be toggle buttons
+		// let j = 0;
+		// for (var i = 51; i < 73; i++) {
+		// 	toggleButtons[j] = i;
+		// 	j++;
+		// }
 	}
 
-	onMIDISuccess (midiAccess) {
-        console.log(midiAccess);
-        var inputs = midiAccess.inputs;
-        var outputs = midiAccess.outputs;
-        for (var input of midiAccess.inputs.values()){
-            input.onmidimessage = getMIDIMessage;
-        }
-    }
-
-    onMIDIFailure () {
-        console.log('Could not access your MIDI devices.');
-    }
-
-    //create an array to hold our cc values and init to a normalized value
-    cc=Array(128).fill(0.001)
-
-
-    getMIDIMessage (midiMessage) {
+  getMIDIMessage (midiMessage) {
       // 44 bis 51 sind die Pads
         var arr = midiMessage.data
         var index = arr[1]
@@ -76,6 +69,24 @@ class MidiManager {
         cc[index]=val
       }
     }
+
+	onMIDISuccess (midiAccess) {
+        console.log('this: ', this); // undefined
+        console.log(midiAccess);
+        var inputs = midiAccess.inputs;
+        var outputs = midiAccess.outputs;
+        for (var input of midiAccess.inputs.values()){
+          // console.log('test');
+            input.onmidimessage = this.getMIDIMessage;
+        }
+    }
+
+    onMIDIFailure () {
+        console.log('Could not access your MIDI devices.');
+    }
+
+    //create an array to hold our cc values and init to a normalized value
+    cc=Array(128).fill(0.001) // TODO refactor
 }
 
 module.exports = MidiManager;

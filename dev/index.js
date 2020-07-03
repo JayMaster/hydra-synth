@@ -13,7 +13,9 @@ function init () {
   midi = hydra.synth.midi;
   metro = hydra.synth.metronom;
 
-  exampleAddFunction();
+  // exampleMetronom();
+  // exampleMetronom();
+  // exampleSmoothing();
 ///  exampleNonGlobal()
 
 //  exampleExtendTransforms()
@@ -27,6 +29,10 @@ function init () {
  // exampleSmoothing()
   ///var generator = new shader()
 
+  // exampleMetronom();
+  // learnShaders();
+  exampleMetronom();
+
 
  // document.body.appendChild(canvas)
  //  var hydra = new Hydra({
@@ -36,26 +42,57 @@ function init () {
  //    detectAudio: true,
  //    makeGlobal: false
  //  })
- //
+ 
  //  window.hydra = hydra
- //
+ 
  //  var sinN = v => (Math.sin(v)+1)/2
  //  var cosN = v => (Math.cos(v)+1)/2
- //
+ 
 
 
- //
+ 
  //  osc().out()
- //
+ 
  //  // set bpm
  //  //hydra.bpm(30)
- //
+ 
  //  var x = 0
  //  loop((dt) => {
  //    hydra.tick(dt)
  //  }).start()
 
 //osc(5).out()
+}
+
+function learnShaders() {
+  setFunction({
+    name: 'myOsc', // name that will be used to access function as well as within glsl
+    type: 'src', // can be src: vec4(vec2 _st), coord: vec2(vec2 _st), color: vec4(vec4 _c0), combine: vec4(vec4 _c0, vec4 _c1), combineCoord: vec2(vec2 _st, vec4 _c0)
+ inputs: [
+   {
+    name: 'freq',
+     type: 'float', // 'float'   //, 'texture', 'vec4'
+     default: 0.2
+   },
+   {
+    name: 'sync',
+         type: 'float',
+         default: 0.1
+       },
+       {
+         name: 'offset',
+         type: 'float',
+         default: 0.0
+       }
+ ],    glsl: `
+    vec2 st = _st;
+   float r = sin((st.x-offset*20./freq-time*sync)*freq)*0.5  + 0.5;
+   float g = sin((st.x+time*sync)*freq)*0.5 + 0.5;
+   float b = sin((st.x+offset/freq+time*sync)*freq)*0.5  + 0.5;
+   return vec4(abs(sin(time)),0.0,0.0,1.0);;
+  `})
+
+  myOsc(10, 0.2, 0.8).out()
 }
 
 function exampleEasingFunctions() {
@@ -117,12 +154,12 @@ function exampleAddFunction(hydra) {
  type: 'src', // can be src: vec4(vec2 _st), coord: vec2(vec2 _st), color: vec4(vec4 _c0), combine: vec4(vec4 _c0, vec4 _c1), combineCoord: vec2(vec2 _st, vec4 _c0)
  inputs: [
    {
-     name: 'freq',
+    name: 'freq',
      type: 'float', // 'float'   //, 'texture', 'vec4'
      default: 0.2
    },
    {
-         name: 'sync',
+    name: 'sync',
          type: 'float',
          default: 0.1
        },
@@ -155,8 +192,8 @@ function exampleCustomCanvas() {
    canvas.width = 800
    canvas.height = 200
 
-   canvas.style.width = '100%'
-   canvas.style.height = '100%'
+   canvas.style.width = '50%'
+   canvas.style.height = '50%'
 
 //canvas.style.imageRe
 
@@ -190,7 +227,8 @@ function exampleSmoothing() {
 }
 
 function exampleSetResolution() {
-  setResolution(20, 20)
+  setResolution(100, 100)
+  shape(3,0.3).out();
 }
 
 function exampleMetronom() {

@@ -18,8 +18,8 @@ class HydraRenderer {
 
   constructor ({
     pb = null,
-    width = 1280,
-    height = 720,
+    width = 40,
+    height = 40,
     numSources = 4,
     numOutputs = 4,
     makeGlobal = true,
